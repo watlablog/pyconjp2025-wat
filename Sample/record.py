@@ -1,23 +1,25 @@
 import pyaudio
 import soundfile as sf
 import numpy as np
-from scipy import fftpack
 from matplotlib import pyplot as plt
 
 
-def record(index, samplerate, fs, time):
+def record(index, samplerate, fs, duration):
     """録音する関数"""
     
     pa = pyaudio.PyAudio()
 
     # ストリームの開始
     data = []
-    dt = 1 / samplerate
-    stream = pa.open(format=pyaudio.paInt16, channels=1, rate=samplerate,
-                     input=True, input_device_index=index, frames_per_buffer=fs)
+    stream = pa.open(format=pyaudio.paInt16,
+                     channels=1,
+                     rate=samplerate,
+                     input=True,
+                     input_device_index=index,
+                     frames_per_buffer=fs)
 
     # フレームサイズ毎に音声を録音していくループ
-    for i in range(int(((time / dt) / fs))):
+    for i in range(int(((duration * samplerate) / fs))):
         frame = stream.read(fs)
         data.append(frame)
 
@@ -77,7 +79,7 @@ if __name__ == '__main__':
     time = 5
     samplerate = 44100
     fs = 1024
-    index = 1
+    index = 2
 
     # 録音する関数を実行
     data, t = record(index, samplerate, fs, time)
