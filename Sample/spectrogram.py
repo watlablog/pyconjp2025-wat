@@ -5,24 +5,23 @@ import soundfile as sf
 
 
 def ov(data, samplerate, Fs, overlap):
-    """オーバーラップをかける関数"""
+    """オーバーラップ処理をする関数"""
 
-    # 全データ長Ts, フレーム周期Fc, オーバーラップ時のフレームずらし幅x_ol, 平均化回数
+    # フレーム数計算（全データ長Ts, フレーム周期Fc, フレームずらし幅x_ol）
     Ts = len(data) / samplerate
     Fc = Fs / samplerate
     x_ol = Fs * (1 - (overlap / 100))
-    N_ave = int((Ts - (Fc * (overlap / 100))) /
-                (Fc * (1 - (overlap / 100))))
+    N = int((Ts - (Fc * (overlap / 100))) / (Fc * (1 - (overlap / 100))))
 
     array = []
 
     # データを抽出
-    for i in range(N_ave):
+    for i in range(N):
         ps = int(x_ol * i)
         array.append(data[ps:ps + Fs:1])
         final_time = (ps + Fs)/samplerate
         
-    return array, N_ave, final_time
+    return array, N, final_time
 
 
 def hanning(data_array, Fs, N_ave):
