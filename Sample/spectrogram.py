@@ -37,17 +37,15 @@ def hanning(data_array, Fs, N_ave):
     return data_array, acf
 
 
-def fft_ave(data_array, samplerate, Fs, N_ave, acf):
+def calc_fft(data_array, samplerate, Fs, N_ave, acf):
     """FFTする関数"""
     
     fft_array = []
     fft_axis = np.linspace(0, samplerate, Fs)
 
-    # FFTをして配列に追加、窓関数補正値をかけ、(Fs/2)の正規化を実施
+    # FFTをして配列に追加、窓関数補正値をかけ正規化を実施
     for i in range(N_ave):
         fft_array.append(acf * np.abs(np.fft.fft(data_array[i]) / (Fs / 2)))
-
-    # 型をndarrayに変換し平均を計算
     fft_array = np.array(fft_array)
 
     return fft_array, fft_axis
@@ -91,7 +89,7 @@ if __name__ == '__main__':
     Fs = 4096
     overlap = 90
 
-    # 波形を作る
+    # wavファイルを読み込み
     path = 'wav/kuchibue.wav'
     data, samplerate = sf.read(path)
     
@@ -106,12 +104,12 @@ if __name__ == '__main__':
     time_array, acf = hanning(time_array, Fs, N_ave)
 
     # FFT
-    fft_array, fft_axis = fft_ave(time_array, samplerate, Fs, N_ave, acf)
+    fft_array, fft_axis = calc_fft(time_array, samplerate, Fs, N_ave, acf)
 
     # スペクトログラムで縦軸周波数、横軸時間にするためにデータを転置
     fft_array = fft_array.T
 
-    # dB変換
+    # dB変換(dB基準値 0dB=20μPa)
     fft_array = 20 * np.log10(fft_array / 2e-5)
 
     # プロット
