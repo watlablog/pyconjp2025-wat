@@ -9,7 +9,7 @@ def fourier_transform(t, x):
     N  = len(x)
     dt = t[1] - t[0]
 
-    # 実数信号用の片側FFTと周波数軸
+    # FFT（実数）と周波数軸
     X = np.fft.rfft(x)
     f = np.fft.rfftfreq(N, d=dt)
 
@@ -40,8 +40,8 @@ def plot(t, x, freq, amp):
     ax2.set_xlabel('Frequency[Hz]')
     ax2.set_ylabel('Amplitude')
     ax2.set_xlim(0.0, 2000.0)
-    #ax2.set_ylim(1e-6, 1e-1)
-    ax2.set_yscale('log')
+    #ax2.set_ylim(-20, 60)
+    #ax2.set_yscale('log')
 
     ax1.plot(t, x, label='time', lw=1, color='red')
     ax2.plot(freq, amp, label='freq', lw=1, color='red')
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     """メイン"""
     
     # wav波形の読み込み
-    path = 'wav/recorded.wav'
+    path = 'wav/kuchibue.wav'
     data, samplerate = sf.read(path)
     
     # 時間軸の作成
@@ -65,4 +65,8 @@ if __name__ == '__main__':
     
     # フーリエ変換とグラフ表示
     freq, amp = fourier_transform(t, data)
-    plot(t, data, freq, amp)
+    
+    # デシベル変換
+    amp_db = 20 * np.log10(amp / 2e-5)
+    
+    plot(t, data, freq, amp_db)
