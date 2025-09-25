@@ -39,8 +39,8 @@ def plot(t, x, freq, amp):
     ax1.set_ylabel('Amplitude')
     ax2.set_xlabel('Frequency[Hz]')
     ax2.set_ylabel('Amplitude')
-    ax2.set_xlim(0.0, 2000.0)
-    #ax2.set_ylim(-20, 60)
+    ax2.set_xlim(0.0, 5000.0)
+    ax2.set_ylim(-20, 80)
     #ax2.set_yscale('log')
 
     ax1.plot(t, x, label='time', lw=1, color='red')
@@ -69,4 +69,5 @@ if __name__ == '__main__':
     # デシベル変換
     amp_db = 20 * np.log10(amp / 2e-5)
     
+    # プロット
     plot(t, data, freq, amp_db)
