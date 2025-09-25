@@ -2,6 +2,7 @@ import pyaudio
 import soundfile as sf
 import numpy as np
 from matplotlib import pyplot as plt
+from pathlib import Path
 
 
 def record(index, samplerate, fs, duration):
@@ -79,7 +80,7 @@ if __name__ == '__main__':
     time = 5
     samplerate = 44100
     fs = 1024
-    index = 2
+    index = 1    # オーディオデバイスの指標
 
     # 録音する関数を実行
     data, t = record(index, samplerate, fs, time)
@@ -87,6 +88,12 @@ if __name__ == '__main__':
     # 波形を確認する
     plot(t, data)
 
+    # 保存先フォルダを作成してから保存
+    out_dir = Path('wav')
+    out_dir.mkdir(parents=True, exist_ok=True)
+
     # wavファイルに保存する
-    filename = 'wav/recorded.wav'
+    filename = out_dir / 'recorded.wav'
     sf.write(filename, data, samplerate)
+
+    print(f'Saved: {filename.resolve()}')
