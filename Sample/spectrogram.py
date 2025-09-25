@@ -60,7 +60,7 @@ def plot(fft_array, samplerate, final_time):
 
     # データをプロットする
     im = ax1.imshow(fft_array,
-                    vmin=0, vmax=80,
+                    vmin=0, vmax=60,
                     extent=[0, final_time, 0, samplerate],
                     aspect='auto',
                     cmap='jet')
@@ -74,8 +74,8 @@ def plot(fft_array, samplerate, final_time):
     ax1.set_ylabel('Frequency [Hz]')
 
     # スケールの設定をする
-    ax1.set_xlim(0, 3)
-    ax1.set_ylim(0, 3000)
+    ax1.set_xlim(0.5, 3)
+    ax1.set_ylim(0, 5000)
 
     # グラフを表示する
     plt.show()
@@ -86,11 +86,11 @@ if __name__ == '__main__':
     """メイン"""
     
     # フレームサイズとオーバーラップ率でスペクトログラムの分解能を調整
-    Fs = 4096
+    Fs = 2048
     overlap = 90
 
     # wavファイルを読み込み
-    path = 'wav/kuchibue.wav'
+    path = 'wav/recorded.wav'
     data, samplerate = sf.read(path)
     
     # ステレオのwavファイルだったらモノラルに変換
