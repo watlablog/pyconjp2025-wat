@@ -56,7 +56,7 @@ if __name__ == '__main__':
     """メイン"""
     
     # wav波形の読み込み
-    path = 'wav/kuchibue.wav'
+    path = 'wav/recorded.wav'
     data, samplerate = sf.read(path)
     
     # 時間軸の作成
